@@ -78,7 +78,6 @@ var onload_script = function () {
         device.on("connect", function (conn) {
           console.log('connected')
           const popup = frappe.twilio_conn_dialog_map[conn];
-          print(popup)
           popup.setup_mute_button(conn);
           popup.dialog.set_secondary_action_label("Hang Up");
           popup.set_header("in-progress");
