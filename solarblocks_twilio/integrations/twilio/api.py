@@ -58,7 +58,7 @@ def voice(**kwargs):
 
 @frappe.whitelist()
 def get_contact_details(phone):
-	lead_doc = frappe.get_doc('Lead', {"phone": phone}) # TODO: replace phone with phone_number for solarblocks
+	lead_doc = frappe.get_doc('Lead', {"phone_number": phone}) # TODO: replace phone with phone_number for solarblocks
 
 	return lead_doc and {
 		'first_name': lead_doc.first_name.title(),
@@ -170,7 +170,7 @@ def get_lead_or_deal_from_number(call):
 		
         # TODO: change phone to phone_number
 		query = f"""
-			SELECT name, phone
+			SELECT name, phone_number
 			FROM `tab{doctype}`
 			WHERE CONCAT('+', REGEXP_REPLACE(phone, '[^0-9]', '')) = {mobile_no}
 		"""
