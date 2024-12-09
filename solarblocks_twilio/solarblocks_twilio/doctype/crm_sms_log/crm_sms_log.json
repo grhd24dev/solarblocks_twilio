@@ -1,0 +1,120 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-07 14:04:25.690459",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sent_by",
+  "from_number",
+  "to_number",
+  "message",
+  "created_on",
+  "sent_on",
+  "column_break_fcrx",
+  "sid",
+  "status",
+  "sms_type",
+  "ref_doctype",
+  "ref_docname"
+ ],
+ "fields": [
+  {
+   "fieldname": "message",
+   "fieldtype": "Text",
+   "label": "Message",
+   "read_only": 1
+  },
+  {
+   "default": "now",
+   "fieldname": "created_on",
+   "fieldtype": "Datetime",
+   "label": "Created on",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sent_on",
+   "fieldtype": "Datetime",
+   "label": "Sent on",
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_number",
+   "fieldtype": "Data",
+   "label": "From",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_number",
+   "fieldtype": "Data",
+   "label": "To",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fcrx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sid",
+   "fieldtype": "Data",
+   "label": "Sid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "queued\ndelivered\nfailed\nsent\nreceived",
+   "read_only": 1
+  },
+  {
+   "default": "Outgoing",
+   "fieldname": "sms_type",
+   "fieldtype": "Select",
+   "label": "SMS Type",
+   "options": "Outgoing\nIncoming",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Link",
+   "label": "Ref Doctype",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "ref_docname",
+   "fieldtype": "Dynamic Link",
+   "label": "Ref Docname",
+   "options": "ref_doctype"
+  },
+  {
+   "fieldname": "sent_by",
+   "fieldtype": "Data",
+   "label": "Sent By"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-12-07 20:28:38.377251",
+ "modified_by": "Administrator",
+ "module": "Solarblocks Twilio",
+ "name": "CRM SMS Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

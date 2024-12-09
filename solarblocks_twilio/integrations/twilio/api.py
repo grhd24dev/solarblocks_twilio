@@ -1,3 +1,4 @@
+from twilio.rest.api.v2010.account.incoming_phone_number.assigned_add_on import assigned_add_on_extension
 from werkzeug.wrappers import Response
 import json
 
@@ -184,8 +185,67 @@ def get_lead_or_deal_from_number(call):
 	doc = find_record(doctype, number) or None
 	if not doc:
 		doctype = "Lead"
-		doc = find_record(doctype, number, 'AND converted is not True')
+		doc = find_record(doctype, number)
 		if not doc:
 			doc = find_record(doctype, number)
 
 	return doc, doctype
+
+@frappe.whitelist()
+def send_message(message, to, ref_doctype, ref_docname):
+	twilio = Twilio.connect()
+	if not twilio:
+		return
+
+	from_number = frappe.db.get_value('Twilio Agents', frappe.session.user, 'twilio_number')
+	message_resp = twilio.twilio_client.messages.create(
+		body=message,
+		from_=from_number,
+		to=to,
+		status_callback=frappe.db.get_single_value("Twilio Settings", "sms_status_callback")
+	)
+
+	if message_resp.status == "queued":
+		user = frappe.get_value("User", frappe.session.user, ["first_name", "last_name"], as_dict=True)
+		sms_log = frappe.new_doc("CRM SMS Log")
+		sms_log.sid = message_resp.sid
+		sms_log.message = message
+		sms_log.to_number = message_resp.to
+		sms_log.from_number = from_number
+		sms_log.ref_doctype = ref_doctype
+		sms_log.ref_docname = ref_docname
+		sms_log.sent_by = f"{user.first_name} {user.last_name or ''}"
+		sms_log.insert(ignore_permissions=True)
+
+@frappe.whitelist(allow_guest=True)
+def twilio_incoming_sms_handler(**kwargs):
+	"""Records incoming messages"""
+	args = frappe._dict(kwargs)
+
+	lead = frappe.get_value("Lead", {"phone": args.From}, ["name", "first_name", "last_name"], as_dict=True)
+	if args.SmsStatus == "received" and lead:
+		sms_log = frappe.new_doc("CRM SMS Log")
+		sms_log.sid = args.SmsMessageSid
+		sms_log.status = args.SmsStatus
+		sms_log.message = args.Body
+		sms_log.to_number = args.To
+		sms_log.from_number = args.From
+		sms_log.ref_doctype = "Lead"
+		sms_log.ref_docname = lead.name
+		sms_log.sent_by = f"{lead.first_name} {lead.last_name or ''}"
+		sms_log.sms_type = "Incoming"
+		sms_log.insert(ignore_permissions=True)
+		frappe.publish_realtime(
+			event="received_sms",
+			message={"user": f"{lead.first_name} {lead.last_name or ''}"},
+			user="Administrator",
+			doctype="Lead",
+			docname="CRM-LEAD-2024-00002"
+		)
+
+@frappe.whitelist(allow_guest=True)
+def sms(**kwargs):
+	args = frappe._dict(kwargs)
+	sms_log = frappe.get_doc("CRM SMS Log", {"sid": args.SmsSid})
+	sms_log.status = args.SmsStatus
+	sms_log.save(ignore_permissions=True)

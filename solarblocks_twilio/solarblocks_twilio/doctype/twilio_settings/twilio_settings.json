@@ -11,6 +11,8 @@
   "enabled",
   "column_break_avmt",
   "record_calls",
+  "section_break_ojgx",
+  "sms_status_callback",
   "section_break_eklq",
   "account_sid",
   "column_break_yqvr",
@@ -92,12 +94,21 @@
   {
    "fieldname": "column_break_yqvr",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ojgx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sms_status_callback",
+   "fieldtype": "Data",
+   "label": "SMS Status Callback"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-01 17:55:25.003703",
+ "modified": "2024-12-08 15:02:42.017719",
  "modified_by": "Administrator",
  "module": "Solarblocks Twilio",
  "name": "Twilio Settings",
