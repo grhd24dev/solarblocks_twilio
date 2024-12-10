@@ -383,7 +383,7 @@ class IncomingCallPopup extends TwilioCallPopup {
     } else {
       caller_details_html += `<div>Phone Number: ${this.conn.parameters.From}</div>`;
     }
-    $(`<div>${caller_details_html}</div>`).appendTo(this.dialog.modal_body);
+    return `<div style="margin-bottom: 30px;">${caller_details_html}</div>`;
   }
 
   show(caller_details) {
@@ -391,6 +391,12 @@ class IncomingCallPopup extends TwilioCallPopup {
       static: 1,
       title: this.get_title(caller_details),
       fields: [
+        {
+          fieldname: "details",
+          label: "Call Details",
+          fieldtype: "HTML",
+          options: this.set_dialog_body(caller_details),
+        },
         {
           fieldname: "note",
           label: "Note",
@@ -427,7 +433,6 @@ class IncomingCallPopup extends TwilioCallPopup {
         }
       },
     });
-    this.set_dialog_body(caller_details);
     this.show_close_button();
     this.dialog.add_custom_action("Mute", null, "btn-mute hide");
     this.dialog.show();
