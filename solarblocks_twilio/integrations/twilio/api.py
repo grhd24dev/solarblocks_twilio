@@ -173,7 +173,7 @@ def get_lead_or_deal_from_number(call):
 		query = f"""
 			SELECT name, phone_number
 			FROM `tab{doctype}`
-			WHERE CONCAT('+', REGEXP_REPLACE(phone, '[^0-9]', '')) = {mobile_no}
+			WHERE CONCAT('+', REGEXP_REPLACE(phone_number, '[^0-9]', '')) = {mobile_no}
 		"""
 
 		data = frappe.db.sql(query + where, as_dict=True)
