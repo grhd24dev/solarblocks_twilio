@@ -23,6 +23,7 @@
   "receiver",
   "caller",
   "recording_url",
+  "listen_recording",
   "end_time",
   "note"
  ],
@@ -124,11 +125,17 @@
    "fieldname": "note",
    "fieldtype": "Text",
    "label": "Note"
+  },
+  {
+   "depends_on": "eval: doc.recording_url.length > 0",
+   "fieldname": "listen_recording",
+   "fieldtype": "Button",
+   "label": "Listen Recording"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-30 20:46:32.612899",
+ "modified": "2024-12-12 22:22:01.713287",
  "modified_by": "Administrator",
  "module": "Solarblocks Twilio",
  "name": "CRM Call Log",
