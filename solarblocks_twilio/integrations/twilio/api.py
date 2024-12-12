@@ -111,6 +111,7 @@ def update_recording_info(**kwargs):
 		call_sid = args.CallSid
 		update_call_log(call_sid)
 		frappe.db.set_value("CRM Call Log", call_sid, "recording_url", recording_url)
+		frappe.db.commit()
 	except:
 		frappe.log_error(title=_("Failed to capture Twilio recording"))
 
