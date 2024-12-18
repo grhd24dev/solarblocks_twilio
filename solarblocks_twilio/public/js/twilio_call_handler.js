@@ -11,6 +11,9 @@ var onload_script = function () {
       method:
         "solarblocks_twilio.integrations.twilio.api.generate_access_token",
       callback: (data) => {
+        if (data.message.error) {
+          return
+        }
         device = new Twilio.Device(data.message.token, {
           codecPreferences: ["opus", "pcmu"],
           fakeLocalDTMF: true,
